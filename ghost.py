@@ -52,9 +52,9 @@ def setup():
     with open("wordlist_kevin_atkinson.txt") as f:
         lst = [line.rstrip() for line in f]
     a_list = [letter for letter in string.ascii_lowercase]
-    word_dict = dict.fromkeys(a_list, list())
+    word_dict = dict.fromkeys(a_list, set())
     for k,_ in word_dict.items():
-        word_dict[k] = [elem for elem in lst if elem.startswith(k)]
+        word_dict[k] = {elem for elem in lst if elem.startswith(k)}
     return word_dict
 
 if __name__ == "__main__":
@@ -79,9 +79,7 @@ if __name__ == "__main__":
                 
             if validate_letter(next_letter, letter_seq):
                 letter_seq = letter_seq+next_letter
-                #wordlist = [word for word in word_dict[letter_seq[0]] if word.startswith(letter_seq)]
                 wordset = {word for word in word_dict[letter_seq[0]] if word.startswith(letter_seq)}
-                #print(wordset)
 
                 if len(letter_seq) > 3 and letter_seq in wordset:
                     # The other player is the winner.
@@ -92,6 +90,7 @@ if __name__ == "__main__":
                 player.add_strike()
                 if player.show_strikes() == 3:
                     print(f"Player {player.name} has {player.show_strikes()} strikes!")
+                    # The other player is the winner.
                     declare_winner(next(player_pool))
                     game_on = False
                     break
