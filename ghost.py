@@ -19,8 +19,8 @@ class Player():
         #self.wins += 1
         print(f"{self.name} WINS!!!")
         
-p1 = Player('p1_Jen')
-p2 = Player('p2_Bob')
+p1 = Player('p1')
+p2 = Player('p2')
 
 def declare_winner(p):
     p.win()
