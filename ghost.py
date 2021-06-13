@@ -60,7 +60,6 @@ def setup():
 if __name__ == "__main__":
     word_dict = setup()
     print("Welcome to GHOST: The Word Game!")    
-    game_on = True
     letter_seq = ''
     # Determine start order
     starter = random.choice([p1,p2])
@@ -69,31 +68,28 @@ if __name__ == "__main__":
     else:
         player_pool = cycle([p2, p1])
 
-    while game_on:
-        for player in player_pool:
+    for player in player_pool:
+        next_letter = input(f"{player.name} enter the next letter: ").lower()
+        # no turn loss.
+        while invalid_character(next_letter):
+            print(f"'{next_letter}' is invalid. Try again!")
             next_letter = input(f"{player.name} enter the next letter: ").lower()
-            # no turn loss.
-            while invalid_character(next_letter):
-                print(f"'{next_letter}' is invalid. Try again!")
-                next_letter = input(f"{player.name} enter the next letter: ").lower()
-                
-            if validate_letter(next_letter, letter_seq):
-                letter_seq = letter_seq+next_letter
-                wordset = {word for word in word_dict[letter_seq[0]] if word.startswith(letter_seq)}
+            
+        if validate_letter(next_letter, letter_seq):
+            letter_seq = letter_seq+next_letter
+            wordset = {word for word in word_dict[letter_seq[0]] if word.startswith(letter_seq)}
 
-                if len(letter_seq) > 3 and letter_seq in wordset:
-                    # The other player is the winner.
-                    declare_winner(next(player_pool))
-                    game_on = False
-                    break  
-            else:
-                player.add_strike()
-                if player.show_strikes() == 3:
-                    print(f"Player {player.name} has {player.show_strikes()} strikes!")
-                    # The other player is the winner.
-                    declare_winner(next(player_pool))
-                    game_on = False
-                    break
-                print(f"Player {player.name} has {player.show_strikes()} strike(s).")
-                # Stay with same player (i.e. skip next player in line.)
-                next(player_pool)
+            if len(letter_seq) > 3 and letter_seq in wordset:
+                # The other player is the winner.
+                declare_winner(next(player_pool))
+                break  
+        else:
+            player.add_strike()
+            if player.show_strikes() == 3:
+                print(f"Player {player.name} has {player.show_strikes()} strikes!")
+                # The other player is the winner.
+                declare_winner(next(player_pool))
+                break
+            print(f"Player {player.name} has {player.show_strikes()} strike(s).")
+            # Stay with same player (i.e. skip next player in line.)
+            next(player_pool)
