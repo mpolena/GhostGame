@@ -17,10 +17,7 @@ class Player():
     
     def win(self):
         #self.wins += 1
-        print(f"{self.name} WINS!!!\n")
-        
-p1 = Player('p1')
-p2 = Player('p2')
+        print(f"{self.name} WINS!!!\n")       
 
 def declare_winner(p):
     p.win()
@@ -58,6 +55,10 @@ def setup():
     return word_dict
 
 if __name__ == "__main__":
+    
+    p1 = Player('p1')
+    p2 = Player('p2')
+    
     word_dict = setup()
     print("Welcome to GHOST: The Word Game!")    
     letter_seq = ''
